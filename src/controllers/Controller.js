@@ -1,3 +1,5 @@
+"use strict";
+
 require("dotenv").config();
 const msRest = require("@azure/ms-rest-js");
 const Face = require("@azure/cognitiveservices-face");
@@ -87,6 +89,6 @@ module.exports = {
 
     await FindSimilar();
 
-    return res.send();
+    return res.send("Teste: " + process.env.TESTE);
   },
 };
