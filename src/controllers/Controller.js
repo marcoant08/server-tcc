@@ -5,9 +5,9 @@ const msRest = require("@azure/ms-rest-js");
 const Face = require("@azure/cognitiveservices-face");
 const uuid = require("uuid/v4");
 
-const key = "32cdce1eb70a4e09b79e6666bfb3edff";
-const key2 = "92eb0ce73ecc45fab28ef8c3017dfbec";
-const endpoint = "https://sulbr.cognitiveservices.azure.com/";
+const key = process.env.AZURE_KEY_1;
+const key2 = process.env.AZURE_KEY_2;
+const endpoint = process.env.AZURE_ENDPOINT;
 
 const credentials = new msRest.ApiKeyCredentials({
   inHeader: { "Ocp-Apim-Subscription-Key": key },
@@ -20,7 +20,7 @@ const person_group_id = uuid();
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-async function DetectFaceRecognize(url) {
+const DetectFaceRecognize = async (url) => {
   // Detect faces from image URL. Since only recognizing, use the recognition model 4.
   // We use detection model 3 because we are not retrieving attributes.
   let detected_faces = await client.face.detectWithUrl(url, {
@@ -28,9 +28,9 @@ async function DetectFaceRecognize(url) {
     recognitionModel: "recognition_04",
   });
   return detected_faces;
-}
+};
 
-async function FindSimilar() {
+const FindSimilar = async () => {
   console.log("========FIND SIMILAR========");
   console.log();
 
@@ -75,13 +75,13 @@ async function FindSimilar() {
   let results = await client.face.findSimilar(detected_faces[0].faceId, {
     faceIds: target_face_ids,
   });
+
   results.forEach(function (result) {
     console.log(
       `Faces from: ${source_image_file_name} and ID: ${result.faceId} are similar with confidence: ${result.confidence}.`
     );
   });
-  console.log();
-}
+};
 
 module.exports = {
   async index(req, res) {
