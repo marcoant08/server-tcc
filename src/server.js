@@ -6,4 +6,7 @@ const app = express();
 app.use(express.json());
 app.use(routes);
 
-app.listen(3333);
+const porta = 3333;
+
+app.listen(porta);
+console.log(`Rodando na porta: ${porta}...`);
